@@ -4,7 +4,7 @@ namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject
 {
     public class Documento
     {
-        private string Valor;
+        public string Valor { get; set; }
 
         public Documento(string valor)
         {

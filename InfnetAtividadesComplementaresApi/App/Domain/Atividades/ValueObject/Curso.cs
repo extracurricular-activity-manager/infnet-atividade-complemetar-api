@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace InfnetAtividadesComplementaresApi.Domain.Atividades.ValueObject
+namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject
 {
     public class Curso
     {

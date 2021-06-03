@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity;
+using System.Collections.Generic;
 
 namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.Interface
 {

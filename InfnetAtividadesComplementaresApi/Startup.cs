@@ -3,7 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace InfnetAtividadesComplementaresApi
 {
@@ -20,32 +23,40 @@ namespace InfnetAtividadesComplementaresApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(config =>
+            {
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlComments = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+                config.IncludeXmlComments(xmlComments);
+            });
+
+            ConfigureCors(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseCors("NoCorsPolicy");
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
             //Swagger
-            app.UseSwagger(c =>
+            app.UseSwagger(opcoes =>
             {
-                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                opcoes.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(opcoes =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "API - Gestão de Atividade Complementar");
-                c.RoutePrefix = "swagger";
+                //habilita swagger a adicionar informações de atributo no doc. como [MaxLenght(50)].
+                opcoes.ConfigObject = new ConfigObject
+                {
+                    ShowCommonExtensions = true
+                };
+                opcoes.SwaggerEndpoint("v1/swagger.json", "API - Gestão de Atividade Complementar");
+                opcoes.RoutePrefix = "swagger";
             });
 
             app.UseAuthorization();
@@ -55,9 +66,26 @@ namespace InfnetAtividadesComplementaresApi
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("INFNET - Gerenciador de Atividades Complementares");
+                    await context.Response.WriteAsync(
+                        "API está OK" +
+                        "INFNET - Gerenciador de Atividades Complementares");
                 });
             });
         }
+
+        private static void ConfigureCors(IServiceCollection servicos)
+        {
+            servicos.AddCors(opcoes =>
+            {
+                opcoes.AddPolicy("NoCorsPolicy", builder =>
+                {
+                    builder.SetIsOriginAllowed((host) => true)
+                        .AllowCredentials()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+        }
+
     }
 }
