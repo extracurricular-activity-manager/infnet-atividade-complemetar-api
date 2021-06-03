@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace InfnetAtividadesComplementaresApi
 {
@@ -20,7 +23,12 @@ namespace InfnetAtividadesComplementaresApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(config =>
+            {
+                var xmlCommentsFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlComments = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
+                config.IncludeXmlComments(xmlComments);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
