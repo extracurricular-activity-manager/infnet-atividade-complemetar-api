@@ -22,7 +22,7 @@
   <ItemGroup>
 	<Folder Include="App\Domain\Commons\" />
 	<Folder Include="App\Domain\GerenciaDeUsuario\Entity\" />
-	<Folder Include="App\Dto\Cmd\" />
+	<Folder Include="App\Dto\View\" />
 	<Folder Include="App\Infrastructure\Repository\" />
   </ItemGroup>
   <ItemGroup>

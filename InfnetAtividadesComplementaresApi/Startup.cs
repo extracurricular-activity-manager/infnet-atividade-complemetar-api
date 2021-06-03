@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Reflection;
@@ -45,15 +46,20 @@ namespace InfnetAtividadesComplementaresApi
             app.UseRouting();
 
             //Swagger
-            app.UseSwagger(c =>
+            app.UseSwagger(opcoes =>
             {
-                c.RouteTemplate = "swagger/{documentName}/swagger.json";
+                opcoes.RouteTemplate = "swagger/{documentName}/swagger.json";
             });
 
-            app.UseSwaggerUI(c =>
+            app.UseSwaggerUI(opcoes =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "API - Gestão de Atividade Complementar");
-                c.RoutePrefix = "swagger";
+                //habilita swagger a adicionar informações de atributo no doc. como [MaxLenght(50)].
+                opcoes.ConfigObject = new ConfigObject
+                {
+                    ShowCommonExtensions = true
+                };
+                opcoes.SwaggerEndpoint("v1/swagger.json", "API - Gestão de Atividade Complementar");
+                opcoes.RoutePrefix = "swagger";
             });
 
             app.UseAuthorization();
@@ -63,7 +69,9 @@ namespace InfnetAtividadesComplementaresApi
                 endpoints.MapControllers();
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("INFNET - Gerenciador de Atividades Complementares");
+                    await context.Response.WriteAsync(
+                        "API está OK" +
+                        "INFNET - Gerenciador de Atividades Complementares");
                 });
             });
         }
