@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
 namespace InfnetAtividadesComplementaresApi.Controllers
@@ -22,8 +21,7 @@ namespace InfnetAtividadesComplementaresApi.Controllers
 
         /// <summary>
         /// Consulta de Atividades do aluno por documento.
-        /// </summary>
-        /// <param name="documento"></param>
+        /// </summary>        
         /// <returns></returns>
         /// <response code="200">Consulta realizada com sucesso.</response>
         /// <response code="400">Requisição com parametro incorreto.</response>
@@ -33,13 +31,13 @@ namespace InfnetAtividadesComplementaresApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Atividade>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult ConsultaDeAtividades([FromQuery][Required] string documento)
+        public ActionResult ConsultaDeAtividades()
         {
             try
             {
                 return Ok(CriaMockListaDeAtividade());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 //Log exception message
 
