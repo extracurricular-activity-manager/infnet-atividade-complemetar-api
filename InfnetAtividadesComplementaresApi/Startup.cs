@@ -1,3 +1,4 @@
+using InfnetAtividadesComplementaresApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,8 @@ namespace InfnetAtividadesComplementaresApi
                 config.IncludeXmlComments(xmlComments);
             });
 
-            ConfigureCors(services);
+            services.CorsConfigure();
+            services.JwtConfigure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -72,20 +74,5 @@ namespace InfnetAtividadesComplementaresApi
                 });
             });
         }
-
-        private static void ConfigureCors(IServiceCollection servicos)
-        {
-            servicos.AddCors(opcoes =>
-            {
-                opcoes.AddPolicy("NoCorsPolicy", builder =>
-                {
-                    builder.SetIsOriginAllowed((host) => true)
-                        .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
-        }
-
     }
 }
