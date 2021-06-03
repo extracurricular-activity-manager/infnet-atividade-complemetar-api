@@ -10,4 +10,12 @@
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.3.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />	
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Domain\Atividades\Interface\" />
+    <Folder Include="Domain\Commons\" />
+    <Folder Include="Domain\GerenciaDeUsuario\Entity\" />
+    <Folder Include="Dto\Cmd\" />
+    <Folder Include="Dto\View\" />
+    <Folder Include="Infrastructure\Repository\" />
+  </ItemGroup>
 </Project>
