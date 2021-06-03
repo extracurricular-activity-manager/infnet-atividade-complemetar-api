@@ -2,9 +2,8 @@
 
 namespace InfnetAtividadesComplementaresApi.App.Domain.GerenciaDeUsuario.Entity.Interface
 {
-    public interface IServicoDeLogin
+    public interface IRepositorioDeUsuario
     {
-        string GerarToken(Aluno aluno);
-        (Aluno, string) Autenticar(string documento);
+        Aluno ObterPor(string documento);
     }
 }

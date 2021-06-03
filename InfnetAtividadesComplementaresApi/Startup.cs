@@ -1,3 +1,6 @@
+using InfnetAtividadesComplementaresApi.App.Application.Login;
+using InfnetAtividadesComplementaresApi.App.Domain.GerenciaDeUsuario.Entity.Interface;
+using InfnetAtividadesComplementaresApi.App.Infrastructure.Repository;
 using InfnetAtividadesComplementaresApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -23,6 +26,10 @@ namespace InfnetAtividadesComplementaresApi
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IServicoDeLogin, ServicoDeLogin>();
+            services.AddTransient<IRepositorioDeUsuario, RepositorioDeUsuario>();
+
+
             services.AddControllers();
             services.AddSwaggerGen(config =>
             {
@@ -61,6 +68,7 @@ namespace InfnetAtividadesComplementaresApi
                 opcoes.RoutePrefix = "swagger";
             });
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

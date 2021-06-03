@@ -11,6 +11,7 @@ namespace InfnetAtividadesComplementaresApi.Controllers
 {
     [Route("api/atividade")]
     [ApiController]
+    //[Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     public class AtividadeController : ControllerBase
     {
