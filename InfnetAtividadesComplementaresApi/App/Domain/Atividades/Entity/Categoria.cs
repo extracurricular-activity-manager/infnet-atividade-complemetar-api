@@ -3,7 +3,7 @@
     public class Categoria
     {
         public int LimiteDeHoras { get; set; }
-        public int DescricaoRegraDeConcessao { get; set; }
+        public string DescricaoRegraDeConcessao { get; set; }
 
     }
 }
