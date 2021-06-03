@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
@@ -30,16 +29,14 @@ namespace InfnetAtividadesComplementaresApi
                 var xmlComments = Path.Combine(AppContext.BaseDirectory, xmlCommentsFile);
                 config.IncludeXmlComments(xmlComments);
             });
+
+            ConfigureCors(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseCors("NoCorsPolicy");
 
             app.UseHttpsRedirection();
 
@@ -75,5 +72,20 @@ namespace InfnetAtividadesComplementaresApi
                 });
             });
         }
+
+        private static void ConfigureCors(IServiceCollection servicos)
+        {
+            servicos.AddCors(opcoes =>
+            {
+                opcoes.AddPolicy("NoCorsPolicy", builder =>
+                {
+                    builder.SetIsOriginAllowed((host) => true)
+                        .AllowCredentials()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+        }
+
     }
 }
