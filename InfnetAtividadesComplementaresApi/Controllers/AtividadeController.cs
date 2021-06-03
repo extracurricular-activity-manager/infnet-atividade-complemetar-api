@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Net.Mime;
 
 namespace InfnetAtividadesComplementaresApi.Controllers
@@ -33,7 +32,7 @@ namespace InfnetAtividadesComplementaresApi.Controllers
         [ProducesResponseType(typeof(IEnumerable<Atividade>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult ConsultaDeAtividades([FromQuery][Required] string documento)
+        public ActionResult ConsultaDeAtividades()
         {
             try
             {
