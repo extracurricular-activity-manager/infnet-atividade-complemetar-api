@@ -13,8 +13,9 @@ namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity
         public string TipoDeComprovacaoDescricao { get; set; }
         public int HorasSolicitadas { get; set; }
         public string JustificativaDaSolicitacao { get; set; }
+        public string Observacoes { get; set; }
         public Aluno Aluno { get; set; }
-        public Categoria Categoria { get; set; }
+        public RegraDeConcessao RegraDeConcessao { get; set; }
         public Avaliacao Avaliacao { get; set; }
         public Revisao Revisao { get; set; }
 

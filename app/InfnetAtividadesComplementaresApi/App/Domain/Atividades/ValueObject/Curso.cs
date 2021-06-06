@@ -1,7 +1,6 @@
-﻿using System;
+﻿using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject
 {
@@ -10,5 +9,17 @@ namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject
         public int CursoId { get; set; }
         public string Nome { get; set; }
         public int HorasExigidas { get; set; }
+
+        public List<RegraDeConcessao> RegrasDeConcessao { get; set; }
+
+        public Curso()
+        {
+            RegrasDeConcessao = new List<RegraDeConcessao>();
+        }
+
+        public RegraDeConcessao ObterRegraPor(long id)
+        {
+            return RegrasDeConcessao.FirstOrDefault(regra => regra.RegraDeConcessaoId == id);
+        }
     }
 }
