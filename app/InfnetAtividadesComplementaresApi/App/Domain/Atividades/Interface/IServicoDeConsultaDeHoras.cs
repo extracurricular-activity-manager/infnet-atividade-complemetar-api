@@ -5,6 +5,6 @@ namespace InfnetAtividadesComplementaresApi.App.Domain.Atividades.Interface
 {
     public interface IServicoDeConsultaDeHoras
     {
-        Dictionary<Categoria, int> ObterPor(string documento);
+        Dictionary<RegraDeConcessao, int> ObterPor(string documento);
     }
 }

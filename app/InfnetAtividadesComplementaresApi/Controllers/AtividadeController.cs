@@ -1,16 +1,19 @@
-﻿using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity;
+﻿using InfnetAtividadesComplementaresApi.App.Application.ConsultaDeAtividade;
+using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity;
 using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Enum;
 using InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 
 namespace InfnetAtividadesComplementaresApi.Controllers
 {
     [Route("api/atividade")]
     [ApiController]
+    //[Authorize]
     [Produces(MediaTypeNames.Application.Json)]
     public class AtividadeController : ControllerBase
     {
@@ -21,24 +24,25 @@ namespace InfnetAtividadesComplementaresApi.Controllers
 
         /// <summary>
         /// Consulta de Atividades do aluno por documento.
-        /// </summary>
-        /// <param name="documento"></param>
+        /// </summary>        
         /// <returns></returns>
         /// <response code="200">Consulta realizada com sucesso.</response>
         /// <response code="400">Requisição com parametro incorreto.</response>
         /// <response code="500">Erro interno inesperado ao processar a requisição.</response>
         [HttpGet]
         [Route("consulta")]
-        [ProducesResponseType(typeof(IEnumerable<Atividade>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<DetalheDeAtividadeView>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult ConsultaDeAtividades()
         {
+            var listaAtividades = CriaMockListaDeAtividade();
+            var retorno = listaAtividades.Select(atv => new DetalheDeAtividadeView(atv));
             try
             {
-                return Ok(CriaMockListaDeAtividade());
+                return Ok(retorno);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 //Log exception message
 
@@ -51,12 +55,19 @@ namespace InfnetAtividadesComplementaresApi.Controllers
 
         private IList<Atividade> CriaMockListaDeAtividade()
         {
+            var curso = new Curso()
+            {
+                CursoId = 123,
+                HorasExigidas = 400,
+                Nome = "Comunicação Social - Publicidade e Propaganda"
+            };
             var aluno = new Aluno()
             {
                 AnoDeConcessao = 2018,
                 Documento = new Documento("12345678900"),
                 Matricula = "12345678900",
-                TotalHorasRealizadas = 127
+                TotalHorasRealizadas = 127,
+                Curso = curso
             };
 
             var dataHoje = DateTime.Now;
@@ -65,9 +76,11 @@ namespace InfnetAtividadesComplementaresApi.Controllers
                 new Atividade
                 {
                     Aluno = aluno,
-                    Categoria = new Categoria
+                    RegraDeConcessao = new RegraDeConcessao
                     {
-                        DescricaoRegraDeConcessao = "Descricao 2",
+                        Item = "(a)",
+                        DescricaoDaAtividade = "Descricao da aividade na regra",
+                        DescricaoRegraDeConcessao = "Descricao 1",
                         LimiteDeHoras = 100
                     },
                     Avaliacao = new Avaliacao
@@ -85,13 +98,16 @@ namespace InfnetAtividadesComplementaresApi.Controllers
                     HorasSolicitadas = 50,
                     JustificativaDaSolicitacao = "Só quero o canudo.",
                     TipoDeComprovacao = TipoComprovacaoEnum.Certificado,
-                    TipoDeComprovacaoDescricao = TipoComprovacaoEnum.Certificado.ToString()
+                    TipoDeComprovacaoDescricao = TipoComprovacaoEnum.Certificado.ToString(),
+                    Observacoes = "alguma observação."
                 },
                 new Atividade
                 {
                     Aluno = aluno,
-                    Categoria = new Categoria
+                    RegraDeConcessao = new RegraDeConcessao
                     {
+                        Item = "(b)",
+                        DescricaoDaAtividade = "Descricao da aividade na regra",
                         DescricaoRegraDeConcessao = "Descricao 2",
                         LimiteDeHoras = 100
                     },
@@ -122,7 +138,8 @@ namespace InfnetAtividadesComplementaresApi.Controllers
                     HorasSolicitadas = 10,
                     JustificativaDaSolicitacao = "Só quero o canudo. 2",
                     TipoDeComprovacao = TipoComprovacaoEnum.Declaracao,
-                    TipoDeComprovacaoDescricao = TipoComprovacaoEnum.Declaracao.ToString()
+                    TipoDeComprovacaoDescricao = TipoComprovacaoEnum.Declaracao.ToString(),
+                    Observacoes = "alguma observação."
                 },
             };
         }

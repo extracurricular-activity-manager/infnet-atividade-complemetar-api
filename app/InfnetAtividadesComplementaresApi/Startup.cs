@@ -1,3 +1,7 @@
+using InfnetAtividadesComplementaresApi.App.Application.Login;
+using InfnetAtividadesComplementaresApi.App.Domain.GerenciaDeUsuario.Entity.Interface;
+using InfnetAtividadesComplementaresApi.App.Infrastructure.Repository;
+using InfnetAtividadesComplementaresApi.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,6 +26,10 @@ namespace InfnetAtividadesComplementaresApi
         // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<IServicoDeLogin, ServicoDeLogin>();
+            services.AddTransient<IRepositorioDeUsuario, RepositorioDeUsuario>();
+
+
             services.AddControllers();
             services.AddSwaggerGen(config =>
             {
@@ -30,7 +38,8 @@ namespace InfnetAtividadesComplementaresApi
                 config.IncludeXmlComments(xmlComments);
             });
 
-            ConfigureCors(services);
+            services.CorsConfigure();
+            services.JwtConfigure(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
@@ -59,6 +68,7 @@ namespace InfnetAtividadesComplementaresApi
                 opcoes.RoutePrefix = "swagger";
             });
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -72,20 +82,5 @@ namespace InfnetAtividadesComplementaresApi
                 });
             });
         }
-
-        private static void ConfigureCors(IServiceCollection servicos)
-        {
-            servicos.AddCors(opcoes =>
-            {
-                opcoes.AddPolicy("NoCorsPolicy", builder =>
-                {
-                    builder.SetIsOriginAllowed((host) => true)
-                        .AllowCredentials()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader();
-                });
-            });
-        }
-
     }
 }
