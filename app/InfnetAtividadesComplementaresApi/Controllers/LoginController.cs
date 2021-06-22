@@ -1,5 +1,7 @@
-﻿using InfnetAtividadesComplementaresApi.App.Application.Login;
-using InfnetAtividadesComplementaresApi.App.Domain.GerenciaDeUsuario.Entity.Interface;
+﻿
+
+using InfnetAtividadesComplementares.Dominio.GerenciaDeUsuario.Interface;
+using InfnetAtividadesComplementaresApi.App.Application.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
