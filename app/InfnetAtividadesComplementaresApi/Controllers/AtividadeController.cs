@@ -1,11 +1,13 @@
-﻿using InfnetAtividadesComplementaresApi.App.Application.ConsultaDeAtividade;
-using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Entity;
-using InfnetAtividadesComplementaresApi.App.Domain.Atividades.Enum;
-using InfnetAtividadesComplementaresApi.App.Domain.Atividades.ValueObject;
+﻿using InfnetAtividadesComplementares.Dominio.Atividades.Entity;
+using InfnetAtividadesComplementares.Dominio.Atividades.Enum;
+using InfnetAtividadesComplementares.Dominio.Atividades.Interface;
+using InfnetAtividadesComplementares.Dominio.Atividades.ValueObject;
+using InfnetAtividadesComplementares.Servicos.ConsultaDeAtividade;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Mime;
 
@@ -17,9 +19,43 @@ namespace InfnetAtividadesComplementaresApi.Controllers
     [Produces(MediaTypeNames.Application.Json)]
     public class AtividadeController : ControllerBase
     {
-        public AtividadeController()
+        private readonly IRepositorioDeAtividade _repositorioDeAtividade;
+        public AtividadeController(IRepositorioDeAtividade repositorioDeAtividade)
         {
+            _repositorioDeAtividade = repositorioDeAtividade ??
+                throw new Exception("repositorio de attividade não injetado no endpoint de Atividade.");
+        }
 
+
+        /// <summary>
+        /// Consulta de Atividades do aluno por documento.
+        /// </summary>        
+        /// <returns></returns>
+        /// <response code="200">Consulta realizada com sucesso.</response>
+        /// <response code="400">Requisição com parametro incorreto.</response>
+        /// <response code="500">Erro interno inesperado ao processar a requisição.</response>
+        [HttpGet]
+        [Route("consulta-atividades")]
+        [ProducesResponseType(typeof(IEnumerable<DetalheDeAtividadeView>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult GetAtividades([FromQuery][Required] string matricula)
+        {
+            try
+            {
+                var documento = new Documento(matricula);
+                var retorno = _repositorioDeAtividade.ObterAtividadesPor(documento);
+                return Ok(retorno);
+            }
+            catch (Exception ex)
+            {
+                //Log exception message
+
+                return StatusCode(
+                    StatusCodes.Status500InternalServerError,
+                    new { informacao = ex.Message }
+                );
+            }
         }
 
         /// <summary>
