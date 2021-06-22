@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Dto\View\**" />
+    <EmbeddedResource Remove="Dto\View\**" />
+    <None Remove="Dto\View\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commons\" />
+    <Folder Include="GerenciaDeUsuario\Entity\" />
+  </ItemGroup>
+
+</Project>
