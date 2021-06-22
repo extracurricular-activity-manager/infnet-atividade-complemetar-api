@@ -32,6 +32,8 @@ namespace InfnetAtividadesComplementaresApi
             services.AddTransient<IServicoDeLogin, ServicoDeLogin>();
             services.AddTransient<IRepositorioDeUsuario, RepositorioDeUsuario>();
             services.AddTransient<IRepositorioDeAtividade, RepositorioDeAtividade>();
+            services.AddTransient<IRepositorioDeConcessao, RepositorioDeConcessao>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(config =>
