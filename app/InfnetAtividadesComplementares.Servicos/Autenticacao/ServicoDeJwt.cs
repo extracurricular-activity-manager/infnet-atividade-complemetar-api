@@ -7,35 +7,14 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace InfnetAtividadesComplementares.Servicos.Login
+namespace InfnetAtividadesComplementares.Servicos.Autenticacao
 {
-    public class ServicoDeLogin : IServicoDeLogin
+    public class ServicoDeJwt : IServicoDeJwt
     {
         private readonly IConfiguration Configs;
-        private readonly IRepositorioDeUsuario usuarioRepo;
-        public ServicoDeLogin(IConfiguration configs, IRepositorioDeUsuario repositorioDeUsuario)
+        public ServicoDeJwt(IConfiguration configs)
         {
             Configs = configs;
-            usuarioRepo = repositorioDeUsuario;
-        }
-
-        public (Aluno, string) Autenticar(string documento)
-        {
-            var aluno = default(Aluno);
-            try
-            {
-                aluno = usuarioRepo.ObterPor(documento);
-            }
-            catch (Exception ex)
-            {
-                var msg = ex.Message;
-                throw new Exception("Erro inesperado ao buscar informações do Aluno para Login.");
-            }
-            if (aluno == default(Aluno))
-                return (null, string.Empty);
-
-            var token = GerarToken(aluno);
-            return (aluno, token);
         }
 
         public string GerarToken(Aluno aluno)

@@ -2,9 +2,8 @@
 
 namespace InfnetAtividadesComplementares.Dominio.GerenciaDeUsuario.Interface
 {
-    public interface IServicoDeLogin
+    public interface IServicoDeJwt
     {
         string GerarToken(Aluno aluno);
-        (Aluno, string) Autenticar(string documento);
     }
 }
